@@ -24,7 +24,7 @@ _YES____ 1 pt: The `House` class implements the requested additional methods (`m
 
 _YES____ 1 pt: The `Library` class includes the requested attributes
 
-_PART____ 1 pt: The `Library` class implements the requested methods to add / remove or check out / return titles
+_YES____ 1 pt: The `Library` class implements the requested methods to add / remove or check out / return titles
 
 _YES____ 1 pt: The `Library` class implements the requested additional methods (`containsTitle(...)`, `isAvailable(...)`, and `printCollection()`)
 
@@ -42,13 +42,13 @@ _YES____ 1 pt: The `Cafe` class uses the `restock(...)` method to avoid running 
 
 __PART?___ 4 pts: Programs compile without errors or warnings
 
-_i think?____ 2 pts: Executes fully & consistently without crashing (exception/freeze)
+_YES____ 2 pts: Executes fully & consistently without crashing (exception/freeze)
 
 _____ 2 pt: Complies with style guidelines (missing items 1 pt each):
 
       __NO___ Classes & class members all have Javadoc header comments
 
-      __NO___ Clear and consistent indentation of bracketed sections
+      __YES___ Clear and consistent indentation of bracketed sections
 
       _YES____ Adheres to Java conventions on naming & capitalization
 
