@@ -5,46 +5,113 @@ public class Library extends Building{
 
     private final Hashtable<String, Boolean> collection;
 
+
     public Library(String name, String address, int nFloors) {
       super(name, address, nFloors);
-      this.collection = new Hashtable<String, Boolean>();
+      this.collection = new Hashtable<>();
       System.out.println("You have built a library: 📖");
     }
     
+    class NotAvailableException extends RuntimeException {
+      public NotAvailableException(String s){
+          // Call constructor of parent Exception
+          super(s);
+      }
+    }
+
+    class NotContainedException extends RuntimeException {
+      public NotContainedException(String s){
+        // Call constructor of parent Exception
+        super(s);
+      }
+    }
+   
+
     // Methods (modify collection)
 
     public void addTitle(String title){
       // check that book is not already part of the collection
-      //if (this.containsTitle(title)) { throw RuntimeException(title + " is already part of " + this.getName() + "'s collection.");}
-      this.collection.put(title, true);
+      try { 
+        if (this.containsTitle(title)) {
+          throw new NotContainedException(title + " is already part of " + this.getName() + "'s collection.");
+        }
+        this.collection.put(title, true);
+        System.out.println(title + " was added to the " + this.getName() + " collection.");
+      }
+      catch (NotContainedException E) {
+        System.out.println(E.getMessage());
+      }
     }
 
     public String removeTitle(String title){
       // check that book is part of the collection
-      //if (!this.containsTitle(title)) { throw RuntimeException(title + " is not part of " + this.getName() + "'s collection.");}
       // check that the book is available
-      //if (!this.isAvailable(title)) { throw RuntimeException(title + " is checked out, it cannot be removed at this time.");}
-      this.collection.remove(title, true); 
-      return title;
+      try {
+        if (!this.containsTitle(title)) {
+          throw new NotContainedException(title + " is not part of " + this.getName() + "'s collection.");
+        }
+        if (!this.isAvailable(title)) { 
+          throw new NotAvailableException(title + " is not avaiable");
+        }
+        this.collection.remove(title, true); 
+        return title;
+      }
+      catch(NotContainedException E) {
+        throw new NotContainedException(title + " could not be removed from the collection, it is not part of the " + this.getName() + " collection.");
+      }
+      catch(NotAvailableException E) {
+        throw new NotAvailableException(title + " could not removed from the collection, it is not currently available.");
+      }
     }
+
+    
 
     // Methods (modify value/status)
 
     public void checkOut(String title){
-      // check that book is part of the collection
-      //if (!this.containsTitle(title)) { throw RuntimeException(title + " is not part of " + this.getName() + "'s collection.");}
+      // check that book is part of the collection 
       // check that book is available to check out
-      
-      this.collection.put(title, false);
+      try {
+        if (!this.containsTitle(title)) {
+          throw new NotContainedException(title + " is not part of " + this.getName() + "'s collection.");
+        }
+        if (!this.isAvailable(title)) { 
+          throw new NotAvailableException(title + " is not avaiable");
+        }
+        this.collection.put(title, false);
+        System.out.println(title + " was checked out.");
+      }
+      catch(NotContainedException E) {
+        System.out.println(title + " could not be checked out, it is not part of the " + this.getName() + " collection.");
+      }
+      catch(NotAvailableException E) {
+        System.out.println(title + " could not be checked out, it is not currently available.");
+      }
     }
 
     public void returnBook(String title){
       // check that book is part of the collection
       //if (!this.containsTitle(title)) { throw RuntimeException(title + " is not part of " + this.getName() + "'s collection.");}
       // check that book has been checked out
-
-      this.collection.put(title, true);
+      try {
+        if (!this.containsTitle(title)) {
+          throw new NotContainedException(title + " is not part of " + this.getName() + "'s collection.");
+        }
+        if (this.isAvailable(title)) { 
+          throw new NotAvailableException(title + " is not checked out");
+        }
+        this.collection.put(title, true);
+        System.out.println(title + " was returned.");
+      }
+      catch(NotContainedException E) {
+        System.out.println(title + " could not be returned, it is not part of the " + this.getName() + " collection.");
+      }
+      catch(NotAvailableException E) {
+        System.out.println(title + " could not be returned, it is not checked out.");
+      }
+      
     }
+
 
     // Methods (browsing)
 
@@ -78,22 +145,9 @@ public class Library extends Building{
     public static void main(String[] args) {
       Library neilson = new Library("Neilson Library", "7 Neilson Drive, Northampton, MA 01063", 4);
       neilson.addTitle("Goblin Mode by McKayla Coyle");
-      neilson.printCollection();
       neilson.addTitle("Uglies by Scott Westerfeld");
-
       neilson.addTitle("The Moth Keeper by K. O'Neill");
-      //System.out.println(neilson.removeTitle("Goblin Mode by McKayla Coyle"));
       neilson.printCollection();
-      System.out.println(neilson.toString());
-      System.out.println(neilson.isAvailable("Goblin Mode by McKayla Coyle"));
-      neilson.checkOut("Goblin Mode by McKayla Coyle");
-      System.out.println(neilson.isAvailable("Goblin Mode by McKayla Coyle"));
-      neilson.returnBook("Goblin Mode by McKayla Coyle");
-      System.out.println(neilson.isAvailable("Goblin Mode by McKayla Coyle"));
-      System.out.println(neilson.containsTitle("Goblin Mode by McKayla Coyle"));
-      System.out.println(neilson.removeTitle("Goblin Mode by McKayla Coyle"));
-      System.out.println(neilson.containsTitle("Goblin Mode by McKayla Coyle"));
-
     }
   
   }
